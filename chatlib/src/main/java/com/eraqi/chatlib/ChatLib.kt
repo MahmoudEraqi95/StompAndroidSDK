@@ -12,6 +12,7 @@ object Stomp{
     private val coroutineDispatcher = Dispatchers.IO
     fun initSDK(socketUrl:String){
          webSocketListener = StompWebSocketListenerImpl(socketUrl)
+       // a litlle change
     }
     fun connect(){
         if (webSocketListener==null) {
