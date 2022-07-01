@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/button"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:background="@color/design_default_color_primary_dark"
+        android:gravity="center"
+        android:padding="15dp"
+        android:layout_marginHorizontal="5dp"
+        android:layout_height="wrap_content">
+        <ProgressBar
+            android:id="@+id/pb_loading"
+            android:visibility="gone"
+            android:layout_width="20dp"
+            android:layout_height="20dp"/>
+        <TextView
+            android:text="Loading Button"
+            android:textColor="@color/white"
+            android:id="@+id/text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</merge>
