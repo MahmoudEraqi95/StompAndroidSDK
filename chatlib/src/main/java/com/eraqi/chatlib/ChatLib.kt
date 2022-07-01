@@ -43,7 +43,7 @@ object Stomp{
         if (!isInitialized())
             return
         CoroutineScope(coroutineDispatcher).launch {
-            webSocketListener.subscribe(webSocket, des)
+          //  webSocketListener.subscribe(webSocket, des)
         }
 
     }
