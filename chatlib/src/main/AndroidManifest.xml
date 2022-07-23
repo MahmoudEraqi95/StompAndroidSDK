@@ -3,6 +3,6 @@
     package="com.eraqi.chatlib">
 <application
     >
-    <activity android:name=".ChatActivity"/>
+
 </application>
 </manifest>
