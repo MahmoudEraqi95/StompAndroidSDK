@@ -1,62 +1,69 @@
 package com.eraqi.chatlib
 
+import com.eraqi.chatlib.interfaces.StompWebSocketListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import okhttp3.WebSocket
 
 
-object Stomp{
-    private lateinit var webSocketListener: StompWebSocketListener
-    private lateinit var webSocket:WebSocket
-    private val coroutineDispatcher = Dispatchers.IO
-    fun initSDK(socketUrl:String){
-         webSocketListener = StompWebSocketListenerImpl(socketUrl)
-       // a litlle change
+object Stomp {
+    private var webSocketListener: StompWebSocketListener? = null
+
+    @Volatile
+    private var webSocket: WebSocket? = null
+    fun initSDK(socketUrl: String) {
+        webSocketListener = StompWebSocketListenerImpl(socketUrl)
+
     }
-    fun connect(){
-        if (webSocketListener==null) {
-            println("you need to call initSDK with your destination url first")
+
+    fun connect() {
+        if (webSocketListener == null) {
+
             return
         }
-        CoroutineScope(coroutineDispatcher).launch {
-          webSocket = webSocketListener.connectToSocket()
-
-        }
+        webSocket = webSocketListener!!.connectToSocket()!!
     }
 
-    fun send(des:String, msg: String){
+    fun send(des: String, msg: String) {
+
         if (!isInitialized()) {
             return
         }
 
-        if (des.isBlank() || msg.isBlank()){
-            println("make sure you're sending a valid message and destination")
+        if (des.isBlank() || msg.isBlank()) {
             return
         }
-        CoroutineScope(coroutineDispatcher).launch {
-            webSocketListener.send(webSocket, des, msg)
+        CoroutineScope(Dispatchers.IO).launch {
+            webSocketListener!!.send(webSocket!!, des, msg)
         }
 
     }
-    fun subscribe(des: String){
 
+    fun subscribe(des: String) {
+        println(isInitialized())
         if (!isInitialized())
             return
-        CoroutineScope(coroutineDispatcher).launch {
-          //  webSocketListener.subscribe(webSocket, des)
+        CoroutineScope(Dispatchers.IO).launch {
+            webSocketListener!!.subscribe(webSocket!!, des)
         }
 
+
     }
-    private fun isInitialized():Boolean{
-        if (webSocketListener==null) {
-            println("you need to call initSDK with your destination url first")
+
+    fun listenToReceivedMessages(): Flow<String>? = webSocketListener?.receivedMessageFlow
+
+    private fun isInitialized(): Boolean {
+        if (webSocketListener == null) {
+
             return false
         }
-        if (webSocket==null) {
-            println("you need to connect before you start sending messages")
+        if (webSocket == null) {
+
             return false
         }
         return true
     }
+
 }

@@ -1,5 +1,6 @@
 package com.eraqi.chatlib
 
+import com.eraqi.chatlib.interfaces.StompWebSocketListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -11,12 +12,13 @@ import okio.ByteString
 import java.util.concurrent.TimeUnit
 
 
-class StompWebSocketListenerImpl(socketUrl: String) : WebSocketListener() , StompWebSocketListener{
-    val terminateSymbol = "\u0000"
-    val connectFlow = MutableStateFlow(false)
-    val subscribeFlow = MutableStateFlow(false)
-    val messageFlow = MutableStateFlow(false)
-    val receivedMessageFlow = MutableStateFlow("")
+class StompWebSocketListenerImpl(private val socketUrl: String) : WebSocketListener(), StompWebSocketListener {
+
+    private val connectFlow = MutableStateFlow(false)
+    private val subscribeFlow = MutableStateFlow(false)
+    private val messageFlow = MutableStateFlow(false)
+    override val receivedMessageFlow = MutableStateFlow("")
+
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         webSocket.close(code, reason)
     }
@@ -26,58 +28,65 @@ class StompWebSocketListenerImpl(socketUrl: String) : WebSocketListener() , Stom
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
+        println(text)
         CoroutineScope(Dispatchers.IO).launch {
             when (text.isNotEmpty()) {
-               text.startsWith("CONNECTED") -> connectFlow.value = true
-               text.startsWith("SUBSCRIBED") -> subscribeFlow.value = true
-               text.startsWith("RECEIVED") -> messageFlow.value = true
-               text.startsWith("Message") -> receivedMessageFlow.value = text
+                text.startsWith(COMMAND_CONNECTED) -> connectFlow.value = true
+                text.startsWith(COMMAND_SUBSCRIBED) -> subscribeFlow.value = true
+                text.startsWith(COMMAND_RECEIVED) -> messageFlow.value = true
+                text.startsWith(COMMAND_MESSAGE) -> receivedMessageFlow.value = text
             }
         }
 
     }
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
-        println("MESSAGE: ${bytes.hex()}")
+        println(bytes.toString())
     }
 
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        println("MESSAGE:OnOPen")
+        println(response.message)
 
-        //webSocket.close(1000, "Goodbye, World!")
     }
-    override suspend fun connectToSocket(): WebSocket {
+
+    override  fun connectToSocket(): WebSocket {
         val client = OkHttpClient.Builder()
-            .readTimeout(0, TimeUnit.MILLISECONDS)
+            .readTimeout(5000, TimeUnit.MILLISECONDS)
             .addInterceptor(HttpLoggingInterceptor())
             .build()
         val request: Request = Request.Builder()
-            .url("ws://192.168.1.2:8080/ws/websocket")
+            .url(socketUrl)
             .build()
         return client.newWebSocket(request, this@StompWebSocketListenerImpl)
 
     }
+
     override suspend fun connect(socket: WebSocket): Flow<Boolean> {
-        val connect = "CONNECT\n" +
-                "accept-version:1.1,1.2\n\n$terminateSymbol"
+        val connect = "$COMMAND_CONNECT\n" +
+                "${HEADER_ACCEPT_VERSION}1.1,1.2\n\n$TERMINATE_SYMBOL"
+
 
         socket.send(connect)
         return connectFlow
     }
-    override suspend fun subscribe(socket: WebSocket, des: String): Flow<Boolean>{
-        val subscribeCommand = "SUBSCRIBE\n" +
-                "id:0123\n" +
-                "destination:$des\n\n$terminateSymbol"
+
+    override suspend fun subscribe(socket: WebSocket, des: String): Flow<Boolean> {
+        val subscribeCommand = "$COMMAND_SUBSCRIBE\n" +
+                "${HEADER_ID}0123\n" +
+                "$HEADER_DESTINATION$des\n\n" +
+                TERMINATE_SYMBOL
 
         socket.send(subscribeCommand)
-       return subscribeFlow
+        return subscribeFlow
     }
-    override suspend fun send(socket: WebSocket, des:String, msg:String):Flow<Boolean>{
-        val sendCommand = "SEND\n" +
-                "destination:$des\n" +
-                "content-type:text/plain\n" +
-                "\n" +
-                "$msg\n$terminateSymbol"
+
+    override suspend fun send(socket: WebSocket, des: String, msg: String): Flow<Boolean> {
+        val sendCommand = "$COMMAND_SEND\n" +
+                "$HEADER_DESTINATION$des\n" +
+                "$HEADER_CONTENT_TYPE$HEADER_VALUE_TEXT_PLAIN\n\n" +
+                "$msg\n" +
+                TERMINATE_SYMBOL
+        println(sendCommand)
         socket.send(sendCommand)
         return messageFlow
 
