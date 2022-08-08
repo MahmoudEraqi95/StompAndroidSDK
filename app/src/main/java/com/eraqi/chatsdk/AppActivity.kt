@@ -40,7 +40,6 @@ class AppActivity : AppCompatActivity() {
             Stomp.initSDK("ws://192.168.1.14:8080/ws/websocket", dispatcher)
             Stomp.connect()
             registerListeners()
-
         }
         send.setOnClickListener {
             val msg = message.text.toString()
