@@ -1,9 +1,12 @@
 package com.eraqi.chatlib
 
 import com.eraqi.chatlib.interfaces.StompWebSocketListener
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import okhttp3.WebSocket
 
@@ -13,17 +16,30 @@ object Stomp {
 
     @Volatile
     private var webSocket: WebSocket? = null
-    fun initSDK(socketUrl: String) {
+    private lateinit var dispatcher: CoroutineDispatcher
+    fun initSDK(socketUrl: String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         webSocketListener = StompWebSocketListenerImpl(socketUrl)
+        this.dispatcher = dispatcher
 
     }
 
     fun connect() {
         if (webSocketListener == null) {
-
             return
         }
-        webSocket = webSocketListener!!.connectToSocket()!!
+
+        CoroutineScope(dispatcher).launch {
+            webSocket = webSocketListener!!.connectToSocket()!!
+            webSocketListener!!.connect(webSocket!!)
+            /*webSocketListener!!.connectFlow.collect {
+                if (it){
+                    println("Connected Successfuly")
+                }else{
+                    println("connection error")
+                }
+            }*/
+
+        }
     }
 
     fun send(des: String, msg: String) {
@@ -35,17 +51,16 @@ object Stomp {
         if (des.isBlank() || msg.isBlank()) {
             return
         }
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(dispatcher).launch {
             webSocketListener!!.send(webSocket!!, des, msg)
         }
 
     }
 
     fun subscribe(des: String) {
-        println(isInitialized())
         if (!isInitialized())
             return
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(dispatcher).launch {
             webSocketListener!!.subscribe(webSocket!!, des)
         }
 
@@ -53,7 +68,9 @@ object Stomp {
     }
 
     fun listenToReceivedMessages(): Flow<String>? = webSocketListener?.receivedMessageFlow
-
+    fun listenToConnectFlow(): SharedFlow<Boolean>? = webSocketListener?.connectFlow
+    fun listenToSubscribeFlow(): Flow<Boolean>? = webSocketListener?.subscribeFlow
+    fun listenToMessageFlow(): Flow<Boolean>? = webSocketListener?.messageFlow
     private fun isInitialized(): Boolean {
         if (webSocketListener == null) {
 
