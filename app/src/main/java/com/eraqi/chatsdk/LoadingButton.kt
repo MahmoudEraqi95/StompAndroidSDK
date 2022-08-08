@@ -40,13 +40,14 @@ class LoadingButton(context: Context, attr: AttributeSet) :
                         progressBar.visibility = View.VISIBLE
                     }
                     is LoadingButton.ButtonState.Success -> {
-                        progressBar.visibility = View.GONE
+                        text.visibility = View.VISIBLE
                         text.text = "Disconnect"
+                        progressBar.visibility = View.GONE
                         button.setBackgroundColor(Color.parseColor("#0F9D58"))
                     }
                     is LoadingButton.ButtonState.Failure -> {
-                        progressBar.visibility = View.GONE
                         text.text = "Connect"
+                        progressBar.visibility = View.GONE
                         button.setBackgroundColor(Color.parseColor("#3700B3"))
                     }
                 }

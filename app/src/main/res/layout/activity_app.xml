@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -17,6 +18,25 @@
         app:layout_constraintStart_toStartOf = "parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="wrap_content"/>
+    <TextView
+        android:id="@+id/tv_remote_message"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf= "@+id/subscribe"
+        app:layout_constraintTop_toBottomOf= "@+id/subscribe"
+        android:layout_marginTop="20dp"
+        android:text="remote"
+       />
+    <TextView
+        android:id="@+id/tv_my_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf= "@+id/connect"
+        app:layout_constraintTop_toBottomOf= "@+id/subscribe"
+        android:layout_marginTop="20dp"
+        android:text="me"
+        />
 <LinearLayout
     android:orientation="horizontal"
     android:layout_width="match_parent"
@@ -25,6 +45,7 @@
     app:layout_constraintBottom_toBottomOf="parent"
     android:layout_height="wrap_content">
     <EditText
+        android:id="@+id/et_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="3"
@@ -32,10 +53,13 @@
         android:hint=" Message"
          />
     <Button
+        android:id="@+id/btn_send"
         android:layout_width="0dp"
         android:text="Send"
         android:textAllCaps="false"
         android:layout_weight="1"
         android:layout_height="wrap_content"/>
 </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
