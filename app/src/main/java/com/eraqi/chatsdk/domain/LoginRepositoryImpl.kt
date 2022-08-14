@@ -1,12 +1,13 @@
 package com.eraqi.chatsdk.domain
 
+import com.eraqi.chatsdk.data.models.LoginRequest
 import com.eraqi.chatsdk.data.models.LoginResponse
-import com.eraqi.chatsdk.data.network.NetworkManager
-import kotlinx.coroutines.flow.first
+import com.eraqi.chatsdk.data.network.ApiServices
+import javax.inject.Inject
 
-class LoginRepositoryImpl(private val networkManager: NetworkManager): LoginRepository {
+class LoginRepositoryImpl @Inject constructor(private val apiServices: ApiServices): LoginRepository {
     override suspend fun registerUser(userId: String): LoginResponse {
-        return networkManager.registerRequest(userId).first()
+        return apiServices.registerUser(LoginRequest( userId))
     }
 
 }
