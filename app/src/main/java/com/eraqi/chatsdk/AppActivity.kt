@@ -57,7 +57,6 @@ class AppActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             Stomp.listenToReceivedMessages()?.collect{
                 withContext(Dispatchers.Main) {
-
                     remoteMessage.text = remoteMessage.text.toString()+"\n$it"
                 }
             }
