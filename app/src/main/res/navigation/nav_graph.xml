@@ -5,7 +5,7 @@
     app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.eraqi.chatsdk.LoginFragment"
+        android:name="com.eraqi.chatsdk.ui.LoginFragment"
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_allUsersFragment"
@@ -13,6 +13,17 @@
     </fragment>
     <fragment
         android:id="@+id/allUsersFragment"
-        android:name="com.eraqi.chatsdk.AllUsersFragment"
-        android:label="AllUsersFragment" />
+        android:name="com.eraqi.chatsdk.ui.AllUsersFragment"
+        android:label="AllUsersFragment" >
+        <action
+            android:id="@+id/action_allUsersFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_allUsersFragment_to_chatFragment"
+            app:destination="@id/chatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatFragment"
+        android:name="com.eraqi.chatsdk.ui.ChatFragment"
+        android:label="ChatFragment" />
 </navigation>

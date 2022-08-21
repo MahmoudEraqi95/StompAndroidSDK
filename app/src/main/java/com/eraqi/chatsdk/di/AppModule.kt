@@ -3,6 +3,8 @@ package com.eraqi.chatsdk.di
 import com.eraqi.chatsdk.data.network.ApiServices
 import com.eraqi.chatsdk.domain.LoginRepository
 import com.eraqi.chatsdk.domain.LoginRepositoryImpl
+import com.eraqi.chatsdk.domain.UsersRepository
+import com.eraqi.chatsdk.domain.UsersRepositoryImpl
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -29,5 +31,10 @@ class AppModule {
     @Singleton
     fun provideLoginRepository(apiServices: ApiServices): LoginRepository {
         return LoginRepositoryImpl(apiServices)
+    }
+    @Provides
+    @Singleton
+    fun provideUserRepository(apiServices: ApiServices): UsersRepository {
+        return UsersRepositoryImpl(apiServices)
     }
 }

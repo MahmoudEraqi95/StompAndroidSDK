@@ -57,7 +57,7 @@ class StompWebSocketListenerImpl(private val socketUrl: String) : WebSocketListe
             text.startsWith(COMMAND_SUBSCRIBED) -> subscribeFlow.tryEmit(true)
             text.startsWith(COMMAND_RECEIVED) -> messageFlow.tryEmit(true)
             text.startsWith(COMMAND_MESSAGE) -> receivedMessageFlow.tryEmit(text.replaceBefore("" +
-                    "\n\n",""))
+                    "\n\n","").trim())
         }
 
 
@@ -103,10 +103,10 @@ class StompWebSocketListenerImpl(private val socketUrl: String) : WebSocketListe
 
     }
 
-    override suspend fun send(socket: WebSocket, des: String, msg: String): Flow<Boolean> {
+    override suspend fun send(socket: WebSocket, des: String, msg: String, userId: String): Flow<Boolean> {
         val sendCommand = "$COMMAND_SEND\n" +
                 "$HEADER_DESTINATION$des\n" +
-                "$HEADER_ID$randomId\n" +
+                "$HEADER_ID$userId\n" +
                 "$HEADER_CONTENT_TYPE$HEADER_VALUE_TEXT_PLAIN\n\n" +
                 "$msg\n" +
                 TERMINATE_SYMBOL
