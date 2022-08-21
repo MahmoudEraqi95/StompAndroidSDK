@@ -7,8 +7,10 @@
         <entry key="..\:/ChatSDK/app/src/main/res/layout/activity_login.xml" value="0.1" />
         <entry key="..\:/ChatSDK/app/src/main/res/layout/activity_main.xml" value="0.3500905797101449" />
         <entry key="..\:/ChatSDK/app/src/main/res/layout/fragment_all_users.xml" value="0.18385416666666668" />
+        <entry key="..\:/ChatSDK/app/src/main/res/layout/fragment_chat.xml" value="0.18385416666666668" />
         <entry key="..\:/ChatSDK/app/src/main/res/layout/fragment_login.xml" value="0.3500905797101449" />
         <entry key="..\:/ChatSDK/app/src/main/res/layout/fragment_navigation_container.xml" value="0.18385416666666668" />
+        <entry key="..\:/ChatSDK/app/src/main/res/layout/item_all_users.xml" value="0.18541666666666667" />
         <entry key="..\:/ChatSDK/app/src/main/res/layout/loading_button.xml" value="0.18541666666666667" />
       </map>
     </option>

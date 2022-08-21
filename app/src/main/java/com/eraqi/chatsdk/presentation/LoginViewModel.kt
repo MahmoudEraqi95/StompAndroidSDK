@@ -1,17 +1,14 @@
-package com.eraqi.chatsdk
+package com.eraqi.chatsdk.presentation
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eraqi.chatsdk.App
 import com.eraqi.chatsdk.data.models.LoginResponse
-import com.eraqi.chatsdk.di.DaggerAppComponent
 
-import com.eraqi.chatsdk.domain.LoginRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class LoginViewModel(val app: Application): AndroidViewModel(app) {
 
@@ -30,5 +27,5 @@ class LoginViewModel(val app: Application): AndroidViewModel(app) {
 
         }
     }
-    fun getRegisterationFlow(): Flow<Boolean> = registerationFlow
+    fun getRegistrationFlow(): Flow<Boolean> = registerationFlow
 }

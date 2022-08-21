@@ -17,54 +17,38 @@ object Stomp {
     @Volatile
     private var webSocket: WebSocket? = null
     private lateinit var dispatcher: CoroutineDispatcher
-    fun initSDK(socketUrl: String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+    suspend fun initSDK(socketUrl: String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         webSocketListener = StompWebSocketListenerImpl(socketUrl)
         this.dispatcher = dispatcher
 
     }
 
-    fun connect() {
+    suspend fun connect() {
         if (webSocketListener == null) {
             return
         }
-
-        CoroutineScope(dispatcher).launch {
-            webSocket = webSocketListener!!.connectToSocket()!!
-            webSocketListener!!.connect(webSocket!!)
-            /*webSocketListener!!.connectFlow.collect {
-                if (it){
-                    println("Connected Successfuly")
-                }else{
-                    println("connection error")
-                }
-            }*/
-
-        }
+        webSocket = webSocketListener!!.connectToSocket()!!
+        webSocketListener!!.connect(webSocket!!)
     }
 
-    fun send(des: String, msg: String) {
+    fun send(des: String, msg: String, userId: String = "") {
 
         if (!isInitialized()) {
             return
         }
-
         if (des.isBlank() || msg.isBlank()) {
             return
         }
         CoroutineScope(dispatcher).launch {
-            webSocketListener!!.send(webSocket!!, des, msg)
+            webSocketListener!!.send(webSocket!!, des, msg, userId)
         }
 
     }
 
-    fun subscribe(des: String) {
+    suspend fun subscribe(des: String) {
         if (!isInitialized())
             return
-        CoroutineScope(dispatcher).launch {
-            webSocketListener!!.subscribe(webSocket!!, des)
-        }
-
-
+        webSocketListener!!.subscribe(webSocket!!, des)
     }
 
     fun listenToReceivedMessages(): Flow<String>? = webSocketListener?.receivedMessageFlow
@@ -73,11 +57,11 @@ object Stomp {
     fun listenToMessageFlow(): Flow<Boolean>? = webSocketListener?.messageFlow
     private fun isInitialized(): Boolean {
         if (webSocketListener == null) {
-
+            println("not initialized")
             return false
         }
         if (webSocket == null) {
-
+            println("not initialized")
             return false
         }
         return true

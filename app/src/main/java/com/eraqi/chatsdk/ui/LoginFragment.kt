@@ -1,19 +1,24 @@
-package com.eraqi.chatsdk
+package com.eraqi.chatsdk.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.eraqi.chatsdk.databinding.ActivityMainBinding
+import com.eraqi.chatsdk.LoadingButton
+import com.eraqi.chatsdk.presentation.LoginViewModel
+import com.eraqi.chatsdk.R
 import com.eraqi.chatsdk.databinding.FragmentLoginBinding
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class LoginFragment: Fragment() {
+class LoginFragment: BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -23,18 +28,22 @@ class LoginFragment: Fragment() {
         val binding: FragmentLoginBinding = FragmentLoginBinding.inflate(layoutInflater)
         val viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         lifecycleScope.launch {
-            viewModel.getRegisterationFlow().collect {
+            viewModel.getRegistrationFlow().collect {
                 if (it){
                     binding.register.setButtonState(LoadingButton.ButtonState.Success)
                     delay(1500)
-                    findNavController().navigate(R.id.action_loginFragment_to_allUsersFragment)
+                    val bundle = bundleOf("phone" to binding.editTextTextPersonName.text.toString())
+
+                        findNavController().navigate(R.id.action_loginFragment_to_allUsersFragment, bundle)
+
+
                 }
             }
         }
         binding.register.setButtonState(LoadingButton.ButtonState.Initial)
         binding.register.setOnClickListener {
             binding.register.setButtonState(LoadingButton.ButtonState.Loading)
-            viewModel.registerUser(binding.editTextTextPersonName.toString())
+            viewModel.registerUser(binding.editTextTextPersonName.text.toString())
         }
 
         return binding.root
