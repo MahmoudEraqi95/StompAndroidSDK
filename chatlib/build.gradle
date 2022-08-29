@@ -5,8 +5,18 @@ plugins {
     id 'kotlin-kapt'
     id 'maven-publish'
 }
+publishing {
+    publications {
 
+           release(MavenPublication) {
+                groupId 'com.github.eraqi'
+                artifactId = "stompkt"
+                version = "0.1"
+        }
+    }
+}
 android {
+
     compileSdk 31
 
     defaultConfig {
@@ -30,7 +40,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
 }
+
 
 dependencies {
 
