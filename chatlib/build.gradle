@@ -9,7 +9,7 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                groupId 'com.github.eraqi'
+                groupId 'com.github.mahmouderaqi95'
                 artifactId = "stompkt"
                 version = "0.3"
             }
