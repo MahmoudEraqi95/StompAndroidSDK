@@ -5,13 +5,14 @@ plugins {
     id 'kotlin-kapt'
     id 'maven-publish'
 }
-publishing {
-    publications {
-
-           release(MavenPublication) {
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
                 groupId 'com.github.eraqi'
                 artifactId = "stompkt"
-                version = "0.1"
+                version = "0.3"
+            }
         }
     }
 }
