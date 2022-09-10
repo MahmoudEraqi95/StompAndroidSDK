@@ -14,7 +14,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eraqi.chatlib.Stomp
-import com.eraqi.chatsdk.LoadingButton
 import com.eraqi.chatsdk.R
 import com.eraqi.chatsdk.databinding.FragmentAllUsersBinding
 import com.eraqi.chatsdk.presentation.AllUsersFragmentViewModel
@@ -22,7 +21,6 @@ import com.eraqi.chatsdk.ui.adapters.AllUsersAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.internal.notify
 
 class AllUsersFragment: Fragment() {
     lateinit var binding: FragmentAllUsersBinding
@@ -42,6 +40,7 @@ class AllUsersFragment: Fragment() {
             Stomp.initSDK("ws://192.168.1.14:8080/ws/websocket")
             Stomp.connect()
             Stomp.subscribe("/topic/chat/${arguments?.getString("phone")}")
+
         }
             recyclerView = binding.rvUsers
             val userViewModel = ViewModelProvider(this)[AllUsersFragmentViewModel::class.java]
@@ -65,7 +64,7 @@ class AllUsersFragment: Fragment() {
         }
 
 
- val itemClick: (String)->Unit = { phone: String->
+ private val itemClick: (String)->Unit = { phone: String->
      run {
          println(phone)
          findNavController().navigate(
