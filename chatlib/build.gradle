@@ -9,13 +9,15 @@ afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
-                groupId 'com.github.mahmouderaqi95'
+                from components.release
+                groupId 'com.github.MahmoudEraqi95'
                 artifactId = "stompkt"
-                version = "0.3"
+                version = "0.5"
             }
         }
     }
 }
+
 android {
 
     compileSdk 31
