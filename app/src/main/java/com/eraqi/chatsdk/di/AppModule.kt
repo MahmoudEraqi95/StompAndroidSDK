@@ -20,7 +20,7 @@ class AppModule {
     @Singleton
     fun provideApiService(): ApiServices {
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.14:8080")
+            .baseUrl("http://172.17.143.141:8080")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         return retrofit.create(ApiServices::class.java)

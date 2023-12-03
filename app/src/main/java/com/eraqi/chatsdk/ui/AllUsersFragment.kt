@@ -21,6 +21,8 @@ import com.eraqi.chatsdk.ui.adapters.AllUsersAdapter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
+import kotlin.math.log
 
 class AllUsersFragment: Fragment() {
     lateinit var binding: FragmentAllUsersBinding
@@ -37,11 +39,14 @@ class AllUsersFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenCreated {
-            Stomp.initSDK("ws://192.168.1.14:8080/ws/websocket")
-            Stomp.connect()
-            Stomp.subscribe("/topic/chat/${arguments?.getString("phone")}")
+            try {
+                Stomp.initSDK("ws://172.17.143.141:8080/ws/websocket")
+                Stomp.connect()
+                Stomp.subscribe("/topic/chat/${arguments?.getString("phone")}")
+            }catch (e: Exception){
+                println(e)
 
-        }
+            }            }
             recyclerView = binding.rvUsers
             val userViewModel = ViewModelProvider(this)[AllUsersFragmentViewModel::class.java]
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

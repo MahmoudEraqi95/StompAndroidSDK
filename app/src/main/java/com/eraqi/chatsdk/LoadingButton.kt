@@ -30,6 +30,7 @@ class LoadingButton(context: Context, attr: AttributeSet) :
         button = findViewById(R.id.button)
         progressBar = findViewById(R.id.pb_loading)
         text = findViewById(R.id.text)
+        text.text = "Register"
         buttonState = MutableStateFlow(ButtonState.Initial)
         CoroutineScope(Dispatchers.Main).launch {
             buttonState.collect {
@@ -46,7 +47,8 @@ class LoadingButton(context: Context, attr: AttributeSet) :
                         button.setBackgroundColor(Color.parseColor("#0F9D58"))
                     }
                     is LoadingButton.ButtonState.Failure -> {
-                        text.text = "Connect"
+                        text.visibility = View.VISIBLE
+                        text.text = "Register"
                         progressBar.visibility = View.GONE
                         button.setBackgroundColor(Color.parseColor("#3700B3"))
                     }

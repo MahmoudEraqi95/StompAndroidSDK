@@ -18,7 +18,6 @@ class LoginViewModel(val app: Application): AndroidViewModel(app) {
         viewModelScope.launch {
             val  repo = (app.applicationContext as App).appComponent.getLoginRepository()
             val result = repo.registerUser(userId)
-            println(result.javaClass)
             if (result is LoginResponse.Result) {
                 registerationFlow.emit(result.success)
             }else{

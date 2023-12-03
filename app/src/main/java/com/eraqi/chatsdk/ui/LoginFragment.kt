@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,8 +18,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.Exception
 
-class LoginFragment: BaseFragment() {
+class LoginFragment : BaseFragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,14 +31,19 @@ class LoginFragment: BaseFragment() {
         val viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
         lifecycleScope.launch {
             viewModel.getRegistrationFlow().collect {
-                if (it){
+
+                if (it) {
                     binding.register.setButtonState(LoadingButton.ButtonState.Success)
                     delay(1500)
                     val bundle = bundleOf("phone" to binding.editTextTextPersonName.text.toString())
 
-                        findNavController().navigate(R.id.action_loginFragment_to_allUsersFragment, bundle)
-
-
+                    findNavController().navigate(
+                        R.id.action_loginFragment_to_allUsersFragment,
+                        bundle
+                    )
+                }else{
+                    Toast.makeText(requireContext(), "Couldn't connect", Toast.LENGTH_LONG).show()
+                    binding.register.setButtonState(LoadingButton.ButtonState.Failure)
                 }
             }
         }
@@ -44,6 +51,7 @@ class LoginFragment: BaseFragment() {
         binding.register.setOnClickListener {
             binding.register.setButtonState(LoadingButton.ButtonState.Loading)
             viewModel.registerUser(binding.editTextTextPersonName.text.toString())
+
         }
 
         return binding.root
