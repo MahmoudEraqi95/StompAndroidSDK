@@ -34,7 +34,6 @@ class LoginFragment : BaseFragment() {
 
                 if (it) {
                     binding.register.setButtonState(LoadingButton.ButtonState.Success)
-                    delay(1500)
                     val bundle = bundleOf("phone" to binding.editTextTextPersonName.text.toString())
 
                     findNavController().navigate(

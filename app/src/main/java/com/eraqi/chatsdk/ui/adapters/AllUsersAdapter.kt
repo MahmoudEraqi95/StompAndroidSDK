@@ -8,7 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.eraqi.chatsdk.R
 
-class AllUsersAdapter(val context: Context, val users: ArrayList<String>, val itemClick: ((String)->Unit)): RecyclerView.Adapter<AllUsersAdapter.ViewHolder>() {
+class AllUsersAdapter(val context: Context, val users: ArrayList<String>,
+                      val itemClick: ((String)->Unit)): RecyclerView.Adapter<AllUsersAdapter.ViewHolder>() {
     class ViewHolder( val view: View): RecyclerView.ViewHolder(view) {
         var userName: TextView = view.findViewById(R.id.tv_user)
 

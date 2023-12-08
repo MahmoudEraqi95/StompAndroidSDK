@@ -11,5 +11,4 @@ class App:Application() {
         appComponent = DaggerAppComponent.create()
     }
 
-
 }

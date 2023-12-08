@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
+    id 'io.gitlab.arturbosch.detekt'
 }
 
 android {
@@ -35,6 +36,13 @@ android {
     }
 }
 
+detekt{
+    toolVersion = "1.23.3"
+    allRules = true
+    config.setFrom(file("config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
+}
+
 dependencies {
     implementation project(path: ':chatlib')
     def nav_version = "2.5.1"
@@ -52,7 +60,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
     implementation 'com.google.android.material:material:1.6.1'
     implementation 'com.github.MahmoudEraqi95:stompkt:0.6'
-
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
