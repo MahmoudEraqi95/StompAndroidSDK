@@ -1,11 +1,10 @@
 package com.eraqi.chatsdk.di
 
 import com.eraqi.chatsdk.data.network.ApiServices
-import com.eraqi.chatsdk.domain.LoginRepository
-import com.eraqi.chatsdk.domain.LoginRepositoryImpl
-import com.eraqi.chatsdk.domain.UsersRepository
-import com.eraqi.chatsdk.domain.UsersRepositoryImpl
-import com.google.gson.Gson
+import com.eraqi.chatsdk.domain.repo.LoginRepository
+import com.eraqi.chatsdk.data.repo.LoginRepositoryImpl
+import com.eraqi.chatsdk.domain.repo.UsersRepository
+import com.eraqi.chatsdk.data.repo.UsersRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit

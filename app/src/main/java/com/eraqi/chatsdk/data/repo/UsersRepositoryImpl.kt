@@ -1,6 +1,7 @@
-package com.eraqi.chatsdk.domain
+package com.eraqi.chatsdk.data.repo
 
 import com.eraqi.chatsdk.data.network.ApiServices
+import com.eraqi.chatsdk.domain.repo.UsersRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject

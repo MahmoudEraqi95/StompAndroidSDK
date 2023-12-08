@@ -1,4 +1,4 @@
-package com.eraqi.chatsdk.data.models
+package com.eraqi.chatsdk.domain.models
 
 import java.lang.Exception
 

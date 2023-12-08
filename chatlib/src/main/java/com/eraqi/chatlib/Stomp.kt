@@ -6,7 +6,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import okhttp3.WebSocket
 
@@ -56,15 +55,10 @@ object Stomp {
     fun listenToSubscribeFlow(): Flow<Boolean>? = webSocketListener?.subscribeFlow
     fun listenToMessageFlow(): Flow<Boolean>? = webSocketListener?.messageFlow
     private fun isInitialized(): Boolean {
-        if (webSocketListener == null) {
-            println("not initialized")
-            return false
-        }
-        if (webSocket == null) {
+        if (webSocketListener == null || webSocket == null) {
             println("not initialized")
             return false
         }
         return true
     }
-
 }

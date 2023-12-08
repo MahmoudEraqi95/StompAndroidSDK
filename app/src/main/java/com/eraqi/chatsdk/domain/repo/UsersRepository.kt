@@ -1,4 +1,4 @@
-package com.eraqi.chatsdk.domain
+package com.eraqi.chatsdk.domain.repo
 
 import kotlinx.coroutines.flow.Flow
 

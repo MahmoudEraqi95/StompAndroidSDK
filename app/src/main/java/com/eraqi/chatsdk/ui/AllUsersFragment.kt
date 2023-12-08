@@ -24,7 +24,7 @@ import kotlinx.coroutines.withContext
 import java.lang.Exception
 import kotlin.math.log
 
-class AllUsersFragment: Fragment() {
+class AllUsersFragment : Fragment() {
     lateinit var binding: FragmentAllUsersBinding
     lateinit var recyclerView: RecyclerView
     override fun onCreateView(
@@ -35,6 +35,7 @@ class AllUsersFragment: Fragment() {
         binding = FragmentAllUsersBinding.inflate(layoutInflater)
         return binding.root
     }
+
     @SuppressLint("NotifyDataSetChanged")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,39 +44,41 @@ class AllUsersFragment: Fragment() {
                 Stomp.initSDK("ws://172.17.143.141:8080/ws/websocket")
                 Stomp.connect()
                 Stomp.subscribe("/topic/chat/${arguments?.getString("phone")}")
-            }catch (e: Exception){
+            } catch (e: Exception) {
                 println(e)
 
-            }            }
-            recyclerView = binding.rvUsers
-            val userViewModel = ViewModelProvider(this)[AllUsersFragmentViewModel::class.java]
-            recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            val adapter = AllUsersAdapter(requireContext(), arrayListOf(), itemClick)
-            recyclerView.adapter = adapter
-
-            lifecycleScope.launch {
-
-                userViewModel.getUsersFlow().collect {
-                    withContext(Dispatchers.Main){
-                        adapter.addItems(it)
-                        adapter.notifyDataSetChanged()
-                    }
-                }
-            }
-            userViewModel.getUsers(arguments?.getString("phone")!!)
-            requireActivity().onBackPressedDispatcher.addCallback{
-                findNavController().navigate(R.id.action_allUsersFragment_to_loginFragment)
             }
         }
+        recyclerView = binding.rvUsers
+        val userViewModel = ViewModelProvider(this)[AllUsersFragmentViewModel::class.java]
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        val adapter = AllUsersAdapter(requireContext(), arrayListOf(), itemClick)
+        recyclerView.adapter = adapter
+
+        lifecycleScope.launch {
+
+            userViewModel.getUsersFlow().collect {
+                withContext(Dispatchers.Main) {
+                    adapter.addItems(it)
+                    adapter.notifyDataSetChanged()
+                }
+            }
+        }
+        userViewModel.getUsers(arguments?.getString("phone")!!)
+        requireActivity().onBackPressedDispatcher.addCallback {
+            findNavController().navigate(R.id.action_allUsersFragment_to_loginFragment)
+        }
+    }
 
 
- private val itemClick: (String)->Unit = { phone: String->
-     run {
-         println(phone)
-         findNavController().navigate(
-             R.id.action_allUsersFragment_to_chatFragment,
-             bundleOf("my_phone" to phone)
-         )
-     }
- }
+    private val itemClick: (String) -> Unit = { phone: String ->
+        run {
+            println(phone)
+            findNavController().navigate(
+                R.id.action_allUsersFragment_to_chatFragment,
+                bundleOf("my_phone" to phone)
+            )
+        }
+    }
 }

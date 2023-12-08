@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.eraqi.chatsdk.App
-import com.eraqi.chatsdk.data.models.LoginResponse
+import com.eraqi.chatsdk.domain.models.LoginResponse
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow

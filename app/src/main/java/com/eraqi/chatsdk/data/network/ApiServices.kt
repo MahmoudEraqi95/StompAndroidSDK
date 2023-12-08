@@ -1,7 +1,7 @@
 package com.eraqi.chatsdk.data.network
 
-import com.eraqi.chatsdk.data.models.LoginRequest
-import com.eraqi.chatsdk.data.models.LoginResponse
+import com.eraqi.chatsdk.domain.models.LoginRequest
+import com.eraqi.chatsdk.domain.models.LoginResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

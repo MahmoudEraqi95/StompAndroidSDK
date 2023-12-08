@@ -1,18 +1,30 @@
 package com.eraqi.chatlib
 
 import com.eraqi.chatlib.interfaces.StompWebSocketListener
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
+import com.eraqi.chatlib.utils.COMMAND_CONNECT
+import com.eraqi.chatlib.utils.COMMAND_CONNECTED
+import com.eraqi.chatlib.utils.COMMAND_MESSAGE
+import com.eraqi.chatlib.utils.COMMAND_RECEIVED
+import com.eraqi.chatlib.utils.COMMAND_SEND
+import com.eraqi.chatlib.utils.COMMAND_SUBSCRIBE
+import com.eraqi.chatlib.utils.COMMAND_SUBSCRIBED
+import com.eraqi.chatlib.utils.HEADER_ACCEPT_VERSION
+import com.eraqi.chatlib.utils.HEADER_CONTENT_TYPE
+import com.eraqi.chatlib.utils.HEADER_DESTINATION
+import com.eraqi.chatlib.utils.HEADER_ID
+import com.eraqi.chatlib.utils.HEADER_VALUE_TEXT_PLAIN
+import com.eraqi.chatlib.utils.TERMINATE_SYMBOL
+import com.eraqi.chatlib.utils.TIME_OUT_TIME
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.launch
-import okhttp3.*
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import okhttp3.logging.HttpLoggingInterceptor
 import okio.ByteString
-import java.util.*
 import java.util.concurrent.TimeUnit
 
 
@@ -39,10 +51,6 @@ class StompWebSocketListenerImpl(private val socketUrl: String) : WebSocketListe
 
     override fun onClosed(webSocket: WebSocket, code: Int, reason: String) {
         webSocket.close(code, reason)
-    }
-
-    override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-
     }
 
     override fun onMessage(webSocket: WebSocket, text: String) {
@@ -74,7 +82,7 @@ class StompWebSocketListenerImpl(private val socketUrl: String) : WebSocketListe
 
     override fun connectToSocket(): WebSocket {
         val client = OkHttpClient.Builder()
-            .readTimeout(5000, TimeUnit.MILLISECONDS)
+            .readTimeout(TIME_OUT_TIME, TimeUnit.MILLISECONDS)
             .addInterceptor(HttpLoggingInterceptor())
             .build()
         val request: Request = Request.Builder()
@@ -95,7 +103,7 @@ class StompWebSocketListenerImpl(private val socketUrl: String) : WebSocketListe
 
     override suspend fun subscribe(socket: WebSocket, des: String) {
         val subscribeCommand = "$COMMAND_SUBSCRIBE\n" +
-                "${HEADER_ID}$randomId\n" +
+                "$HEADER_ID$randomId\n" +
                 "$HEADER_DESTINATION$des\n\n" +
                 TERMINATE_SYMBOL
         println(subscribeCommand)
@@ -115,6 +123,4 @@ class StompWebSocketListenerImpl(private val socketUrl: String) : WebSocketListe
         return messageFlow
 
     }
-
-
 }

@@ -1,10 +1,8 @@
 package com.eraqi.chatsdk.di
 
-import android.app.Application
 import com.eraqi.chatsdk.data.network.ApiServices
-import com.eraqi.chatsdk.domain.LoginRepository
-import com.eraqi.chatsdk.domain.UsersRepository
-import dagger.BindsInstance
+import com.eraqi.chatsdk.domain.repo.LoginRepository
+import com.eraqi.chatsdk.domain.repo.UsersRepository
 import dagger.Component
 import javax.inject.Singleton
 

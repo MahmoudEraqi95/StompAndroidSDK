@@ -15,7 +15,6 @@ class AllUsersAdapter(val context: Context, val users: ArrayList<String>, val it
         fun bindItem(item: String,  itemClick: ((String)->Any?)){
             userName.text = item
             view.setOnClickListener{
-                println(item)
                itemClick(item)
             }
         }

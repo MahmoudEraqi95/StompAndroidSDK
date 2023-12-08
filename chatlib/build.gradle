@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'maven-publish'
+    id 'io.gitlab.arturbosch.detekt'
 }
 afterEvaluate {
     publishing {
@@ -45,7 +46,12 @@ android {
     }
 
 }
-
+detekt{
+    toolVersion = "1.23.3"
+    allRules = true
+    config.setFrom(file("config/detekt/detekt.yml"))
+    buildUponDefaultConfig = true
+}
 
 dependencies {
 

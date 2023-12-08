@@ -1,6 +1,6 @@
-package com.eraqi.chatsdk.domain
+package com.eraqi.chatsdk.domain.repo
 
-import com.eraqi.chatsdk.data.models.LoginResponse
+import com.eraqi.chatsdk.domain.models.LoginResponse
 
 interface LoginRepository {
 
