@@ -5,7 +5,7 @@ import com.eraqi.chatsdk.domain.models.LoginRequest
 import com.eraqi.chatsdk.domain.models.LoginResponse
 import com.eraqi.chatsdk.data.network.ApiServices
 import com.eraqi.chatsdk.domain.repo.LoginRepository
-import com.eraqi.chatsdk.utils.LoginRepositoryImplTAG
+import com.eraqi.chatsdk.utils.LOGIN_REPOSITORY_IMPL_TAG
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class LoginRepositoryImpl @Inject constructor(private val apiServices: ApiServic
            result = apiServices.registerUser(LoginRequest(userId))
 
         }catch (e: Exception){
-            Log.e(LoginRepositoryImplTAG, e.message.toString())
+            Log.e(LOGIN_REPOSITORY_IMPL_TAG, e.message.toString())
             result = LoginResponse.Failure(Exception("Connection Exception"))
         }
 

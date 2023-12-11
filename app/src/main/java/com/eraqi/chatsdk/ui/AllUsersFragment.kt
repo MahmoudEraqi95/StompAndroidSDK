@@ -2,6 +2,7 @@ package com.eraqi.chatsdk.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,8 @@ import com.eraqi.chatsdk.R
 import com.eraqi.chatsdk.databinding.FragmentAllUsersBinding
 import com.eraqi.chatsdk.presentation.AllUsersFragmentViewModel
 import com.eraqi.chatsdk.ui.adapters.AllUsersAdapter
+import com.eraqi.chatsdk.utils.ALL_USERS_FRAGMENT_TAG
+import com.eraqi.chatsdk.utils.SOCKET_URL
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -25,8 +28,8 @@ import java.lang.Exception
 import kotlin.math.log
 
 class AllUsersFragment : Fragment() {
-    lateinit var binding: FragmentAllUsersBinding
-    lateinit var recyclerView: RecyclerView
+    private lateinit var binding: FragmentAllUsersBinding
+    private lateinit var recyclerView: RecyclerView
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -41,12 +44,11 @@ class AllUsersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         lifecycleScope.launchWhenCreated {
             try {
-                Stomp.initSDK("ws://172.17.143.141:8080/ws/websocket")
+                Stomp.initSDK(SOCKET_URL)
                 Stomp.connect()
                 Stomp.subscribe("/topic/chat/${arguments?.getString("phone")}")
             } catch (e: Exception) {
-                println(e)
-
+               Log.e(ALL_USERS_FRAGMENT_TAG, e.message.toString())
             }
         }
         recyclerView = binding.rvUsers

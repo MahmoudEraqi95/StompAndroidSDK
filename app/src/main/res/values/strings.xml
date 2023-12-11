@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ChatSDK</string>
     <string name="phone_number"> Phone Number</string>
+    <string name="connection_error">Couldnt connect</string>
 </resources>

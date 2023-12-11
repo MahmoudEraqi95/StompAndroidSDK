@@ -29,7 +29,7 @@ class LoginFragment : BaseFragment() {
     ): View {
         val binding: FragmentLoginBinding = FragmentLoginBinding.inflate(layoutInflater)
         val viewModel = ViewModelProvider(this).get(LoginViewModel::class.java)
-        lifecycleScope.launch {
+        lifecycleScope.launch{
             viewModel.getRegistrationFlow().collect {
 
                 if (it) {
@@ -41,7 +41,7 @@ class LoginFragment : BaseFragment() {
                         bundle
                     )
                 }else{
-                    Toast.makeText(requireContext(), "Couldn't connect", Toast.LENGTH_LONG).show()
+                    Toast.makeText(requireContext(), R.string.connection_error, Toast.LENGTH_LONG).show()
                     binding.register.setButtonState(LoadingButton.ButtonState.Failure)
                 }
             }

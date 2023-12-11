@@ -66,6 +66,8 @@ class StompWebSocketListenerImpl(private val socketUrl: String) : WebSocketListe
             text.startsWith(COMMAND_RECEIVED) -> messageFlow.tryEmit(true)
             text.startsWith(COMMAND_MESSAGE) -> receivedMessageFlow.tryEmit(text.replaceBefore("" +
                     "\n\n","").trim())
+
+            else -> {}
         }
 
 

@@ -52,6 +52,7 @@ class LoadingButton(context: Context, attr: AttributeSet) :
                         progressBar.visibility = View.GONE
                         button.setBackgroundColor(Color.parseColor("#3700B3"))
                     }
+                    else->{}
                 }
             }
         }
